@@ -1,0 +1,26 @@
+[
+    {
+        "Name": "Goldfish",
+        "MinSize": 1,
+        "MaxSize": 5,
+        "PriceTier": 10,
+        "Color": "#FFD700",
+        "Family": "Carassius"
+    },
+    {
+        "Name": "Clownfish",
+        "MinSize": 2,
+        "MaxSize": 4,
+        "PriceTier": 15,
+        "Color": "#FF4500",
+        "Family": "Pomacentridae"
+    },
+    {
+        "Name": "Guppy",
+        "MinSize": 1,
+        "MaxSize": 3,
+        "PriceTier": 5,
+        "Color": "#00FF00",
+        "Family": "Poeciliidae"
+    }
+]

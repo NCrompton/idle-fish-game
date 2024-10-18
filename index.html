@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js App</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+        #add-button {
+            position: absolute;
+            bottom: 20px; /* Adjust the position as needed */
+            right: 20px; /* Adjust the position as needed */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background-color: #FF4500;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        #infoBox {
+            position: absolute;
+            top: 20px; /* Adjust position */
+            left: 20px; /* Adjust position */
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: none; /* Hidden by default */
+        }
+        #sidebar {
+            position: absolute;
+            top: 0;
+            right: -250px; /* Start hidden to the right */
+            width: 200px;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            overflow: auto; /* Allows scrolling if content overflows */
+            padding: 10px;
+            z-index: 10; /* Ensure it appears above other elements */
+            transition: right 0.3s ease; /* Smooth transition for sliding */
+        }
+
+        .icon-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border: none;
+            background-color: #4CAF50; /* Button color */
+            color: white;
+            border-radius: 50%; /* Make it round */
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .icon-button:focus {
+            outline: none; /* Remove focus outline */
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="fish.js"></script>
+    <script src="app.js"></script>
+    <script src="view.js"></script>
+    
+    <button id="add-button" onClick="addFish();inflateSidebar()">Click Me!</button>
+    <div id="infoBox">
+        <h3>Fish Options</h3>
+        <ul id="fishOptions">
+            <li>Option 1</li>
+            <li>Option 2</li>
+            <li>Option 3</li>
+        </ul>
+    </div>
+    <div id="sidebar" style="display: none;">
+        <h3>Sidebar</h3>
+        <ul id="sidebarContent">
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+        </ul>
+    </div>
+    <button id="toggleSidebar" class="icon-button" onClick="toggleOpenSidebar()">
+        <span>☰</span> <!-- You can replace this with an icon of your choice -->
+    </button>
+</body>
+</html>
