@@ -35,13 +35,19 @@ function resetFishStat(fish) {
 
 function addFish() {
     let i = fishList.length;
-    const color = colors[i % colors.length];
-    const fish = createFish(color);
-    fish.fishInfo = {
-        id: i + 1,
-        color: color,
-        speed: fish.speed.toFixed(2), // Store fish properties
-    };
+    let typeNum = fishTypes.length;
+    let fishType = fishTypes[Math.floor(Math.random() * (typeNum))];
+    // const color = colors[i % colors.length];
+    console.log(fishType);
+    const fish = createFish(fishType.color);
+    
+    const sizeRange = fishType.maxSize - fishType.minSize;
+    const size = fishType.minSize + (Math.random()*sizeRange);
+    const price = fishType.priceTier*size*Math.random()*2;
+    let fishObj = new Fish(i, fishType, size, 0, price, fishType.color)
+
+    fish.fishInfo = fishObj;
+
     fishList.push(fish);
     scene.add(fish);
 }
@@ -57,8 +63,11 @@ const initFishCount = 5; // Number of fish
 const fishList = [];
 const colors = [0xFF4500, 0xFFD700, 0x00FF00, 0x1E90FF, 0xFF69B4]; // Array of colors
 
-for (let i = 0; i < initFishCount; i++) {
-    addFish();
+function initFish() {
+    for (let i = 0; i < initFishCount; i++) {
+        addFish();
+    }
+    inflateSidebar();
 }
 
 // Set camera position
@@ -116,11 +125,7 @@ window.addEventListener('click', (event) => {
         const clickedFish = intersects[0].object;
         const fishInfo = clickedFish.fishInfo;
         
-        const infoItems = [
-            `Fish ID: ${fishInfo.id}`,
-            `Color: #${fishInfo.color.toString(16).padStart(6, '0')}`,
-            `Speed: ${fishInfo.speed}`
-        ];
+        const infoItems = fishInfo.getInfo();
 
         infoItems.forEach(item => {
             const li = document.createElement('li');
@@ -141,11 +146,7 @@ window.addEventListener('click', (event) => {
             if (distance < clickDistanceThreshold) {
                 const fishInfo = fish.fishInfo;
                 
-                const infoItems = [
-                    `Fish ID: ${fishInfo.id}`,
-                    `Color: #${fishInfo.color.toString(16).padStart(6, '0')}`,
-                    `Speed: ${fishInfo.speed}`
-                ];
+                const infoItems = fish.getInfo();
 
                 infoItems.forEach(item => {
                     const li = document.createElement('li');

@@ -36,11 +36,7 @@ function inflateSidebar() {
     sidebarOption.innerHTML = "";
     fishList.forEach((fish) => {
         const fishInfo = fish.fishInfo;
-        const infoItems = [
-            `Fish ID: ${fishInfo.id}`,
-            `Color: #${fishInfo.color.toString(16).padStart(6, '0')}`,
-            `Speed: ${fishInfo.speed}`
-        ];
+        const infoItems = fish.fishInfo.getInfo();
         infoItems.forEach(item => {
             const li = document.createElement('li');
             li.innerText = item;

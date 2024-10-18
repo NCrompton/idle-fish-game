@@ -1,32 +1,45 @@
 class FishType {
-    constructor(name, minSize, maxSize, priceTier, color, family) {
+    constructor(name, minSize, maxSize, priceTier, color, family, growingSpeed) {
         this.name = name;
         this.minSize = minSize;
         this.maxSize = maxSize;
         this.priceTier = priceTier;
         this.color = color;
         this.family = family;
+        this.growingSpeed = growingSpeed;
     }
 }
 
 class Fish {
-    constructor(id, type, size, level, price) {
+    constructor(id, type, size, level, price, color) {
         this.id = id;
         this.type = type; // Instance of FishType
         this.size = size;
         this.level = level;
         this.price = price;
+        this.color = color;
+    }
+
+    getString() {
+        return `Fish ID: ${this.id}, Type: ${this.type.name}, Size: ${this.size}, Level: ${this.level}, Price: $${this.price}`;
     }
 
     getInfo() {
-        return `Fish ID: ${this.id}, Type: ${this.type.name}, Size: ${this.size}, Level: ${this.level}, Price: $${this.price}`;
+        return [
+            `Fish ID: ${this.id}`,
+            // `Color: #${this.color.toString(16).padStart(6, '0')}`,
+            `Type: ${this.type.name}`,
+            `Price: ${this.price}`,
+            `Level: ${this.level}`,
+            `Size: ${this.size}`,
+        ];
     }
 }
 
 const fishTypes = [];
 
 // Fetch fish types from JSON file
-fetch('fishTypes.json', {mode: "cors"})
+fetch('https://raw.githubusercontent.com/NCrompton/idle-fish-game/refs/heads/main/fishTypes.json')
     .then(response => response.json())
     .then(data => {
         data.forEach(typeData => {
@@ -36,13 +49,15 @@ fetch('fishTypes.json', {mode: "cors"})
                 typeData.MaxSize,
                 typeData.PriceTier,
                 typeData.Color,
-                typeData.Family
+                typeData.Family,
+                typeData.GrowingSpeed,
             );
             fishTypes.push(fishType);
         });
 
         // Create fish instances using the fish types
         createFishInstances();
+        initFish();
     })
     .catch(error => console.error('Error loading fish types:', error));
 

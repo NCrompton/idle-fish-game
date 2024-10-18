@@ -5,7 +5,8 @@
         "MaxSize": 5,
         "PriceTier": 10,
         "Color": "#FFD700",
-        "Family": "Carassius"
+        "Family": "Carassius",
+        "GrowingSpeed": 0.5
     },
     {
         "Name": "Clownfish",
@@ -13,7 +14,8 @@
         "MaxSize": 4,
         "PriceTier": 15,
         "Color": "#FF4500",
-        "Family": "Pomacentridae"
+        "Family": "Pomacentridae",
+        "GrowingSpeed": 0.3
     },
     {
         "Name": "Guppy",
@@ -21,6 +23,25 @@
         "MaxSize": 3,
         "PriceTier": 5,
         "Color": "#00FF00",
-        "Family": "Poeciliidae"
+        "Family": "Poeciliidae",
+        "GrowingSpeed": 0.8
+    },
+    {
+        "Name": "Betta",
+        "MinSize": 2,
+        "MaxSize": 4,
+        "PriceTier": 20,
+        "Color": "#1E90FF",
+        "Family": "Osphronemidae",
+        "GrowingSpeed": 0.6
+    },
+    {
+        "Name": "Angelfish",
+        "MinSize": 3,
+        "MaxSize": 6,
+        "PriceTier": 25,
+        "Color": "#FF69B4",
+        "Family": "Cichlidae",
+        "GrowingSpeed": 0.4
     }
 ]
