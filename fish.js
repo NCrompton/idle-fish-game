@@ -1,5 +1,5 @@
 class FishType {
-    constructor(name, minSize, maxSize, priceTier, color, family, growingSpeed) {
+    constructor(name, minSize, maxSize, priceTier, color, family, growingSpeed, typeId) {
         this.name = name;
         this.minSize = minSize;
         this.maxSize = maxSize;
@@ -7,6 +7,7 @@ class FishType {
         this.color = color;
         this.family = family;
         this.growingSpeed = growingSpeed;
+        this.typeId = typeId;
     }
 }
 
@@ -37,9 +38,12 @@ class Fish {
 }
 
 const fishTypes = [];
+function getFishType(id) {
+    return fishTypes.filter((type) => type.id === id);
+}
 
 // Fetch fish types from JSON file
-fetch('https://raw.githubusercontent.com/NCrompton/idle-fish-game/refs/heads/main/fishTypes.json')
+fetch(FISH_JSON_URL)
     .then(response => response.json())
     .then(data => {
         data.forEach(typeData => {
@@ -51,6 +55,7 @@ fetch('https://raw.githubusercontent.com/NCrompton/idle-fish-game/refs/heads/mai
                 typeData.Color,
                 typeData.Family,
                 typeData.GrowingSpeed,
+                typeData.Id,
             );
             fishTypes.push(fishType);
         });

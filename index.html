@@ -7,10 +7,7 @@
     <style>
         body { margin: 0; }
         canvas { display: block; }
-        #add-button {
-            position: absolute;
-            bottom: 20px; /* Adjust the position as needed */
-            right: 20px; /* Adjust the position as needed */
+        .rounded-button {
             padding: 10px 20px;
             border: none;
             border-radius: 25px;
@@ -19,6 +16,11 @@
             font-size: 16px;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        #add-button {
+            position: absolute;
+            bottom: 20px; /* Adjust the position as needed */
+            right: 20px; /* Adjust the position as needed */
         }
         #infoBox {
             position: absolute;
@@ -43,7 +45,6 @@
             z-index: 10; /* Ensure it appears above other elements */
             transition: right 0.3s ease; /* Smooth transition for sliding */
         }
-
         .icon-button {
             position: absolute;
             top: 10px;
@@ -106,15 +107,78 @@
         .text-button:hover{
             background-color: #cccccc;
         }
+        #show-box-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            position: absolute;
+            bottom: 20px; /* Adjust the position as needed */
+            right: 140px; /* Adjust the position as needed */
+        }
+        
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Half-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .hoverBox {
+            background-color: white; /* White background */
+            border-radius: 10px;
+            padding: 20px;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 20;
+        }
+        #main-menu {
+            display: flex;
+            flex-direction: row;
+        }
+        .giant-button {
+            height: 300px;
+            width: 150px;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #007BFF; /* Button color */
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .giant-button:hover {
+            background-color: #0056b3; /* Darker button color on hover */
+        }
     </style>
+    <link rel="stylesheet" href="pack.css">
 </head>
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="fish.js"></script>
-    <script src="app.js"></script>
-    <script src="view.js"></script>
-    
-    <button id="add-button" onClick="addFish();inflateSidebar();">Click Me!</button>
+    <div id="overlay" class="hidden">
+        <div id="main-menu" class="hoverBox">
+            <button class="giant-button" id="pack-button">Draw Fish</button>
+            <button class="giant-button">Button 2</button>
+            <button class="giant-button">Button 3</button>
+            <button class="giant-button">Button 4</button>
+        </div>
+        <div id="pack-menu" class="hoverBox">
+            <div class="pack-item">
+                <div class="pack-item-title">Item 1</div>
+                <div class="pack-item-content">
+                    <p>This is the detail for Item 1. It can contain any information you like.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="rounded-button" id="add-button" onClick="addFish();inflateSidebar();">Add Fish</button>
+    <button class="rounded-button" id="show-box-button" onClick="">Show Menu</button>
     <div id="infoBox">
         <h3>Fish Options</h3>
         <ul id="fishOptions">
@@ -130,8 +194,17 @@
             <h4>Fish List</h4>
         </div>
     </div>
-    <button id="toggleSidebar" class="icon-button" onClick="toggleOpenSidebar()">
+    <button id="toggleSidebar" id="show-box-button" class="icon-button" onClick="toggleOpenSidebar()">
         <span>☰</span> <!-- You can replace this with an icon of your choice -->
     </button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="const.js"></script>
+    <script src="fish.js"></script>
+    <script src="app.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="menu.js"></script>
+    <script src="pack.js"></script>
+    <script src="view.js"></script>
 </body>
 </html>

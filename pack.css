@@ -1,0 +1,30 @@
+
+.pack-item {
+    margin: 10px 0;
+}
+.pack-item-title {
+    cursor: pointer;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.pack-item-content {
+    max-height: 0; /* Hidden by default */
+    overflow: hidden; /* Hide overflow */
+    transition: max-height 0.3s ease; /* Smooth transition */
+    padding: 0 10px; /* Padding for the content */
+}
+
+.pack-item-content p {
+    margin: 10px 0; /* Margin for paragraphs */
+}
+
+.active {
+    max-height: 100px; /* Adjust as needed for animation */
+}
+
+#pack-menu {
+    display: flex;
+    flex-direction: column;
+}

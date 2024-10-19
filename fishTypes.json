@@ -1,6 +1,7 @@
 [
     {
         "Name": "Goldfish",
+        "Id": 0,
         "MinSize": 1,
         "MaxSize": 5,
         "PriceTier": 10,
@@ -10,38 +11,62 @@
     },
     {
         "Name": "Clownfish",
+        "Id": 1,
         "MinSize": 2,
         "MaxSize": 4,
         "PriceTier": 15,
         "Color": "#FF4500",
-        "Family": "Pomacentridae",
+        "Family": "PomacentrIdae",
         "GrowingSpeed": 0.3
     },
     {
         "Name": "Guppy",
+        "Id": 2,
         "MinSize": 1,
         "MaxSize": 3,
         "PriceTier": 5,
         "Color": "#00FF00",
-        "Family": "Poeciliidae",
+        "Family": "PoeciliIdae",
         "GrowingSpeed": 0.8
     },
     {
         "Name": "Betta",
+        "Id": 3,
         "MinSize": 2,
         "MaxSize": 4,
         "PriceTier": 20,
         "Color": "#1E90FF",
-        "Family": "Osphronemidae",
+        "Family": "OsphronemIdae",
         "GrowingSpeed": 0.6
     },
     {
         "Name": "Angelfish",
+        "Id": 4,
         "MinSize": 3,
         "MaxSize": 6,
         "PriceTier": 25,
         "Color": "#FF69B4",
-        "Family": "Cichlidae",
+        "Family": "CichlIdae",
         "GrowingSpeed": 0.4
+    },
+    {
+        "Name": "Lion Fish",
+        "Id": 5,
+        "MinSize": 10,
+        "MaxSize": 15,
+        "PriceTier": 30,
+        "Color": "#FF4500",
+        "Family": "Scorpaenidae",
+        "GrowingSpeed": 0.5
+    },
+    {
+        "Name": "Puffer Fish",
+        "Id": 6,
+        "MinSize": 5,
+        "MaxSize": 10,
+        "PriceTier": 20,
+        "Color": "#FFD700",
+        "Family": "Tetraodontidae",
+        "GrowingSpeed": 0.3
     }
 ]

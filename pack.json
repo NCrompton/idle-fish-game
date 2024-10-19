@@ -1,0 +1,32 @@
+[
+    {
+        "packId": 1,
+        "name": "Basic Pack",
+        "price": 10,
+        "level": 1,
+        "fishTypes": [
+            { "id": "1", "rarity": 2 },
+            { "id": "2", "rarity": 3 }
+        ]
+    },
+    {
+        "packId": 2,
+        "name": "Advanced Pack",
+        "price": 25,
+        "level": 2,
+        "fishTypes": [
+            { "id": "3", "rarity": 4 },
+            { "id": "4", "rarity": 5 }
+        ]
+    },
+    {
+        "packId": 3,
+        "name": "Premium Pack",
+        "price": 50,
+        "level": 3,
+        "fishTypes": [
+            { "id": "5", "rarity": 6 },
+            { "id": "6", "rarity": 3 }
+        ]
+    }
+]
