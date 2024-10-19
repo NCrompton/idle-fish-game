@@ -1,6 +1,6 @@
 // Set up the scene
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -13,8 +13,8 @@ const tank = new THREE.Mesh(tankGeometry, tankMaterial);
 scene.add(tank);
 
 // Function to create a fish
-function createFish(color) {
-    const fishGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+function createFish(color, size) {
+    const fishGeometry = new THREE.SphereGeometry(size, 16, 16);
     const fishMaterial = new THREE.MeshBasicMaterial({ color: color });
     const fish = new THREE.Mesh(fishGeometry, fishMaterial);
 
@@ -39,11 +39,11 @@ function addFish() {
     let fishType = fishTypes[Math.floor(Math.random() * (typeNum))];
     // const color = colors[i % colors.length];
     console.log(fishType);
-    const fish = createFish(fishType.color);
-    
     const sizeRange = fishType.maxSize - fishType.minSize;
     const size = fishType.minSize + (Math.random()*sizeRange);
-    const price = fishType.priceTier*size*Math.random()*2;
+    const fish = createFish(fishType.color, size*0.1);
+    
+    const price = fishType.priceTier*size**2 + Math.random();
     let fishObj = new Fish(i, fishType, size, 0, price, fishType.color)
 
     fish.fishInfo = fishObj;
@@ -73,22 +73,42 @@ function initFish() {
 // Set camera position
 camera.position.z = 10;
 
+const MAX_X_POSITION = 4.5;
+const MIN_X_POSITION = -4.5;
+function validXPosition(fishPos) {
+    return fishPos.x < MAX_X_POSITION && fishPos.x > MIN_X_POSITION;
+}
+const MAX_Y_POSITION = 3;
+const MIN_Y_POSITION = -2.5;
+function validYPosition(fishPos) {
+    return fishPos.y < MAX_Y_POSITION && fishPos.y > MIN_Y_POSITION;
+}
+
 // Animation loop
 function animate() {
     requestAnimationFrame(animate);
 
     fishList.forEach(fish => {
+        if (draggedFish === fish) return;
         fish.position.x += fish.speed * fish.direction;
 
         // Check boundaries
-        if (fish.position.x > 4.5 || fish.position.x < -4.5) {
-            fish.direction *= -1; // Reverse direction
+        if (!validXPosition(fish.position)) {
+            fish.direction = Math.sign(fish.position.x)*-1; // Reverse direction
             
             fish.speed = Math.random() * 0.02 + 0.02;
         }
 
         // Optional: Add a little vertical movement
-        fish.position.y = Math.sin(Date.now() * 0.001 + fishList.indexOf(fish)) * 1; // Different vertical movement per fish
+        if (validYPosition(fish.position)) {
+            fish.position.y += Math.sin(Date.now() * 0.001 + fishList.indexOf(fish)) * 0.02; // Different vertical movement per fish
+        } else {
+            // fish.position.y += Math.sin(Date.now() * -0.001 + fishList.indexOf(fish)) * 0.02; // Different vertical movement per fish
+            if (fish.position.y > MAX_Y_POSITION) {
+                fish.position.y -= fish.speed;
+            } else if (fish.position.y < MIN_Y_POSITION) 
+                fish.position.y += fish.speed;
+        }
     });
 
     renderer.render(scene, camera);
@@ -106,7 +126,8 @@ const mouse = new THREE.Vector2();
 const clickDistanceThreshold = 1;
 const highlightColor = 0xFFFFFF;
 
-window.addEventListener('click', (event) => {
+window.addEventListener('mousemove', (event) => {
+    if (isDragging) return;
     // Calculate mouse position in normalized device coordinates (-1 to +1)
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -118,69 +139,40 @@ window.addEventListener('click', (event) => {
     const intersects = raycaster.intersectObjects(fishList);
     // console.log(intersects.length);
 
-    const fishOptions = document.getElementById('fishOptions');
-    fishOptions.innerHTML = ''; // Clear previous options
-
     if (intersects.length > 0) {
         const clickedFish = intersects[0].object;
-        const fishInfo = clickedFish.fishInfo;
-        
-        const infoItems = fishInfo.getInfo();
+        showOnInfobox(clickedFish);
 
-        infoItems.forEach(item => {
-            const li = document.createElement('li');
-            li.innerText = item;
-            fishOptions.appendChild(li);
-        });
-        // Show the info box when a fish is clicked
-        document.getElementById('infoBox').style.display = 'block';
+        const highlightedFish = intersects[0].object;
+        highlightedFish.material.color.set(highlightColor); // Change color on highlight
     } else {
-        mouse.x = ((event.clientX / window.innerWidth) * 2 - 1)*5;
-        mouse.y = (-(event.clientY / window.innerHeight) * 2 + 1)*5;
-        mouse.z = 0;
-        // console.log(mouse);
-        fishList.some(fish => {
-            // const distance = fish.position.distanceTo(camera.position.clone().add(new THREE.Vector3(mouse.x * 10, mouse.y * 10, 0)));
-            const distance = fish.position.distanceTo(mouse);
-            
-            if (distance < clickDistanceThreshold) {
-                const fishInfo = fish.fishInfo;
-                
-                const infoItems = fish.getInfo();
-
-                infoItems.forEach(item => {
-                    const li = document.createElement('li');
-                    li.innerText = item;
-                    fishOptions.appendChild(li);
-                });
-
-                document.getElementById('infoBox').style.display = 'block';
-                return;
-            } else {
-                document.getElementById('infoBox').style.display = 'none';
-            }
-        });
+        resetFishColors(); // Reset colors before highlighting
+        dismissInfoBox();
     }
 });
 
-window.addEventListener('mousemove', (event) => {
-    // Calculate mouse position in normalized device coordinates (-1 to +1)
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+function showOnInfobox(fish) {
+    const fishOptions = document.getElementById('fishOptions');
+    fishOptions.innerHTML = ''; // Clear previous options
 
-    // Update the raycaster with the camera and mouse position
-    raycaster.setFromCamera(mouse, camera);
+    const fishInfo = fish.fishInfo;
+        
+    const infoItems = fishInfo.getInfo();
 
-    // Calculate objects intersecting the picking ray
-    const intersects = raycaster.intersectObjects(fishList);
+    infoItems.forEach(item => {
+        const li = document.createElement('li');
+        li.innerText = item;
+        fishOptions.appendChild(li);
+    });
 
-    resetFishColors(); // Reset colors before highlighting
+    // Show the info box when a fish is clicked
+    document.getElementById('infoBox').style.display = 'block';
+}
 
-    if (intersects.length > 0) {
-        const highlightedFish = intersects[0].object;
-        highlightedFish.material.color.set(highlightColor); // Change color on highlight
-    } 
-});
+function dismissInfoBox() {
+    document.getElementById('infoBox').style.display = 'none';
+}
+
 
 // Start animation
 animate();
