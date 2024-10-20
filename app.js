@@ -12,6 +12,9 @@ const tankMaterial = new THREE.MeshBasicMaterial({ color: 0x1E90FF, transparent:
 const tank = new THREE.Mesh(tankGeometry, tankMaterial);
 scene.add(tank);
 
+// Set camera position
+camera.position.z = 10;
+
 // Function to create a fish
 function createFish(color, size) {
     const fishGeometry = new THREE.SphereGeometry(size, 16, 16);
@@ -26,62 +29,6 @@ function createFish(color, size) {
     fish.direction = 1; // 1 for right, -1 for left
 
     return fish;
-}
-
-function resetFishStat(fish) {
-    fish.speed = Math.random() * 0.02 + 0.00;
-    return fish;
-}
-
-function addFish() {
-    let i = fishList.length;
-    let typeNum = fishTypes.length;
-    let fishType = fishTypes[Math.floor(Math.random() * (typeNum))];
-    // const color = colors[i % colors.length];
-    console.log(fishType);
-    const sizeRange = fishType.maxSize - fishType.minSize;
-    const size = fishType.minSize + (Math.random()*sizeRange);
-    const fish = createFish(fishType.color, size*0.1);
-    
-    const price = fishType.priceTier*size**2 + Math.random();
-    let fishObj = new Fish(i, fishType, size, 0, price, fishType.color)
-
-    fish.fishInfo = fishObj;
-
-    fishList.push(fish);
-    scene.add(fish);
-}
-
-function resetFishColors() {
-    fishList.forEach(fish => {
-        fish.material.color.set(fish.fishInfo.color);
-    });
-}
-
-// Create an array of fish
-const initFishCount = 5; // Number of fish
-const fishList = [];
-const colors = [0xFF4500, 0xFFD700, 0x00FF00, 0x1E90FF, 0xFF69B4]; // Array of colors
-
-function initFish() {
-    for (let i = 0; i < initFishCount; i++) {
-        addFish();
-    }
-    inflateSidebar();
-}
-
-// Set camera position
-camera.position.z = 10;
-
-const MAX_X_POSITION = 4.5;
-const MIN_X_POSITION = -4.5;
-function validXPosition(fishPos) {
-    return fishPos.x < MAX_X_POSITION && fishPos.x > MIN_X_POSITION;
-}
-const MAX_Y_POSITION = 3;
-const MIN_Y_POSITION = -2.5;
-function validYPosition(fishPos) {
-    return fishPos.y < MAX_Y_POSITION && fishPos.y > MIN_Y_POSITION;
 }
 
 // Animation loop
@@ -126,7 +73,7 @@ const mouse = new THREE.Vector2();
 const clickDistanceThreshold = 1;
 const highlightColor = 0xFFFFFF;
 
-window.addEventListener('mousemove', (event) => {
+renderer.domElement.addEventListener('mousemove', (event) => {
     if (isDragging) return;
     // Calculate mouse position in normalized device coordinates (-1 to +1)
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;

@@ -7,10 +7,11 @@ window.onload = function () {
     
     initAllViewProperty();
     initAllEvent();
-
+    
+    initFish();
     initSidebar();
     initMenu();
-    initPack();
+    // initPack();
 }
 
 function initAllViewProperty() {
@@ -19,7 +20,6 @@ function initAllViewProperty() {
 
 function initAllEvent() {
     const showBoxButton = document.getElementById('show-box-button');
-    const overlay = document.getElementById('overlay');
     
     showBoxButton.addEventListener('click', (event) => {
         showMainMenu();

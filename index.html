@@ -115,7 +115,7 @@
             right: 140px; /* Adjust the position as needed */
         }
         
-        #overlay {
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -156,11 +156,14 @@
         .giant-button:hover {
             background-color: #0056b3; /* Darker button color on hover */
         }
+        #main-overlay{
+            display: none;
+        }
     </style>
     <link rel="stylesheet" href="pack.css">
 </head>
 <body>
-    <div id="overlay" class="hidden">
+    <div class="overlay" id="main-overlay">
         <div id="main-menu" class="hoverBox">
             <button class="giant-button" id="pack-button">Draw Fish</button>
             <button class="giant-button">Button 2</button>
@@ -175,9 +178,10 @@
                 </div>
             </div>
         </div>
+        <div id="pack-result-preview" class="pop-up-menu"></div>
     </div>
 
-    <button class="rounded-button" id="add-button" onClick="addFish();inflateSidebar();">Add Fish</button>
+    <button class="rounded-button" id="add-button" onClick="randomAddFish()">Add Fish</button>
     <button class="rounded-button" id="show-box-button" onClick="">Show Menu</button>
     <div id="infoBox">
         <h3>Fish Options</h3>
@@ -199,6 +203,7 @@
     </button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.142.0/examples/js/controls/OrbitControls.js"></script>
     <script src="const.js"></script>
     <script src="fish.js"></script>
     <script src="app.js"></script>

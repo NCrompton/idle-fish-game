@@ -39,32 +39,95 @@ class Fish {
 
 const fishTypes = [];
 function getFishType(id) {
-    return fishTypes.filter((type) => type.id === id);
+    return fishTypes.filter((fishType) => fishType.typeId.toString() === id.toString())[0];
 }
 
-// Fetch fish types from JSON file
-fetch(FISH_JSON_URL)
-    .then(response => response.json())
-    .then(data => {
-        data.forEach(typeData => {
-            const fishType = new FishType(
-                typeData.Name,
-                typeData.MinSize,
-                typeData.MaxSize,
-                typeData.PriceTier,
-                typeData.Color,
-                typeData.Family,
-                typeData.GrowingSpeed,
-                typeData.Id,
-            );
-            fishTypes.push(fishType);
-        });
+function resetFishStat(fish) {
+    fish.speed = Math.random() * 0.02 + 0.00;
+    return fish;
+}
 
-        // Create fish instances using the fish types
-        createFishInstances();
-        initFish();
-    })
-    .catch(error => console.error('Error loading fish types:', error));
+function addFish(fishType) {
+    let i = fishList.length;
+    let typeNum = fishTypes.length;
+    // const color = colors[i % colors.length];
+    console.log(fishType);
+    const sizeRange = fishType.maxSize - fishType.minSize;
+    const size = fishType.minSize + (Math.random()*sizeRange);
+    const fish = createFish(fishType.color, size*0.1);
+    
+    const price = Math.floor(fishType.priceTier*size**2 + Math.random());
+    let fishObj = new Fish(i, fishType, size, 0, price, fishType.color)
+
+    fish.fishInfo = fishObj;
+
+    fishList.push(fish);
+    scene.add(fish);
+    inflateSidebar();
+    return fish;
+}
+
+function resetFishColors() {
+    fishList.forEach(fish => {
+        fish.material.color.set(fish.fishInfo.color);
+    });
+}
+
+// Create an array of fish
+const initFishCount = 5; // Number of fish
+const fishList = [];
+const colors = [0xFF4500, 0xFFD700, 0x00FF00, 0x1E90FF, 0xFF69B4]; // Array of colors
+
+function addInitFish() {
+    for (let i = 0; i < initFishCount; i++) {
+        let fishType = fishTypes[Math.floor(Math.random() * (fishTypes.length))];
+        addFish(fishType);
+    }
+    inflateSidebar();
+}
+
+const MAX_X_POSITION = 4.5;
+const MIN_X_POSITION = -4.5;
+function validXPosition(fishPos) {
+    return fishPos.x < MAX_X_POSITION && fishPos.x > MIN_X_POSITION;
+}
+const MAX_Y_POSITION = 3;
+const MIN_Y_POSITION = -2.5;
+function validYPosition(fishPos) {
+    return fishPos.y < MAX_Y_POSITION && fishPos.y > MIN_Y_POSITION;
+}
+
+function initFish() {
+    // Fetch fish types from JSON file
+    fetch(FISH_JSON_URL)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(typeData => {
+                const fishType = new FishType(
+                    typeData.Name,
+                    typeData.MinSize,
+                    typeData.MaxSize,
+                    typeData.PriceTier,
+                    typeData.Color,
+                    typeData.Family,
+                    typeData.GrowingSpeed,
+                    typeData.Id,
+                );
+                fishTypes.push(fishType);
+            });
+    
+            // Create fish instances using the fish types
+            createFishInstances();
+            addInitFish();
+            initPack();
+        })
+        .catch(error => console.error('Error loading fish types:', error));
+}
+
+function randomAddFish() {
+    let fishType = fishTypes[Math.floor(Math.random() * (fishTypes.length))];
+    addFish(fishType);
+}
 
 // Function to create fish instances
 function createFishInstances() {

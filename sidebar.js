@@ -23,8 +23,8 @@ function toggleCloseSidebar() {
 function inflateSidebar() {
     
     // Clear existing info rows
-    const existingInfoRows = document.querySelectorAll('.fishInfoRow');
-    existingInfoRows.forEach(row => row.remove());
+    const existingInfo = document.querySelectorAll('.fish-container');
+    existingInfo.forEach(row => row.remove());
 
     fishList.forEach((fish) => {
         displayFishInfo(fish)
@@ -33,6 +33,9 @@ function inflateSidebar() {
 
 function displayFishInfo(fish) {
 
+    const fishContainerDiv = document.createElement('div');
+    fishContainerDiv.className = "fish-container"
+    
     const fishDiv = document.createElement('div');
     fishDiv.classList.add('fish-row')
     // Create a new div for the fish info
@@ -51,6 +54,13 @@ function displayFishInfo(fish) {
         } 
     });
 
+    fishContainerDiv.addEventListener("mouseover", (e) => {
+        fish.material.color.set(0xFFFFFF);
+    });
+    fishContainerDiv.addEventListener("mouseleave", (e) => {
+        fish.material.color.set(fish.fishInfo.color);
+    })
+
     const infoItems = fish.fishInfo.getInfo();
     infoItems.forEach(item => {
         const infoRow = document.createElement('div');
@@ -59,8 +69,9 @@ function displayFishInfo(fish) {
         fishInfoDiv.appendChild(infoRow);
     });
     const fishListElement = document.getElementById('fishList');
-    fishListElement.appendChild(fishDiv);
-    fishListElement.appendChild(fishInfoDiv);
+    fishContainerDiv.appendChild(fishDiv);
+    fishContainerDiv.appendChild(fishInfoDiv);
+    fishListElement.appendChild(fishContainerDiv);
 }
 
 function closeAllFishInfo() {
