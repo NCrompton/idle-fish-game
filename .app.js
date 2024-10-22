@@ -8,27 +8,17 @@ document.body.appendChild(renderer.domElement);
 
 // Create a fish tank (using a box geometry)
 const tankGeometry = new THREE.BoxGeometry(10, 5, 5);
-const tankMaterial = new THREE.MeshStandardMaterial({ color: 0x1E90FF, transparent: true, opacity: 0.5 });
+const tankMaterial = new THREE.MeshBasicMaterial({ color: 0x1E90FF, transparent: true, opacity: 0.5 });
 const tank = new THREE.Mesh(tankGeometry, tankMaterial);
 scene.add(tank);
-
-// Add lighting
-const light = new THREE.PointLight(0xffffff, 1, 100);
-light.position.set(10, 10, 10);
-scene.add(light);
-
-const ambientLight = new THREE.AmbientLight(0x404040);
-scene.add(ambientLight);
 
 // Set camera position
 camera.position.z = 10;
 
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
-
 // Function to create a fish
 function createFish(color, size) {
     const fishGeometry = new THREE.SphereGeometry(size, 16, 16);
-    const fishMaterial = new THREE.MeshStandardMaterial({ color: color });
+    const fishMaterial = new THREE.MeshBasicMaterial({ color: color });
     const fish = new THREE.Mesh(fishGeometry, fishMaterial);
 
     // Random initial position within the tank
@@ -44,7 +34,6 @@ function createFish(color, size) {
 // Animation loop
 function animate() {
     requestAnimationFrame(animate);
-    controls.update();
 
     fishList.forEach(fish => {
         if (draggedFish === fish) return;
